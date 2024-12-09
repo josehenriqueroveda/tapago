@@ -17,9 +17,9 @@ async function exercises(request, response) {
       case "POST":
         await handlePost(request, response);
         break;
-      // case "PUT":
-      //   await handlePut(request, response);
-      //   break;
+      case "PUT":
+        await handlePut(request, response);
+        break;
       // case "DELETE":
       //   await handleDelete(request, response);
       //   break;
@@ -64,6 +64,53 @@ async function handlePost(request, response) {
   });
 
   return response.status(201).json(result.rows[0]);
+}
+
+async function handlePut(request, response) {
+  const { id } = request.query;
+  const { name, reps, rest_seconds, is_active } = request.body;
+
+  if (!id) {
+    return response.status(400).json({ error: "ID is required" });
+  }
+
+  const fields = [];
+  const values = [];
+  let index = 1;
+
+  if (name) {
+    fields.push(`name = $${index++}`);
+    values.push(name);
+  }
+  if (reps) {
+    fields.push(`reps = $${index++}`);
+    values.push(reps);
+  }
+  if (rest_seconds) {
+    fields.push(`rest_seconds = $${index++}`);
+    values.push(rest_seconds);
+  }
+  if (typeof is_active === "boolean") {
+    fields.push(`is_active = $${index++}`);
+    values.push(is_active);
+  }
+
+  if (fields.length === 0) {
+    return response.status(400).json({ error: "No fields to update" });
+  }
+
+  values.push(id);
+
+  const result = await database.query({
+    text: `UPDATE exercises SET ${fields.join(", ")} WHERE id = $${index} RETURNING *`,
+    values,
+  });
+
+  if (result.rows.length === 0) {
+    return response.status(404).json({ error: "Exercise not found" });
+  }
+
+  return response.status(200).json(result.rows[0]);
 }
 
 export default exercises;

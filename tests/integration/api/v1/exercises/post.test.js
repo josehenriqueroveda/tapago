@@ -6,7 +6,7 @@ beforeAll(async () => {
 
 describe("POST /api/v1/exercises", () => {
   describe("Anonymous user", () => {
-    test("Creating exercise", async () => {
+    test("Creating an exercise", async () => {
       const response = await fetch("http://localhost:3000/api/v1/exercises", {
         method: "POST",
         headers: {
@@ -25,6 +25,9 @@ describe("POST /api/v1/exercises", () => {
       const responseBody = await response.json();
 
       expect(typeof responseBody).toBe("object");
+      expect(responseBody.name).toBe("Supino Reto");
+      expect(responseBody.reps).toBe("8-10");
+      expect(responseBody.rest_seconds).toBe(60);
     }, 5000);
   });
 });
