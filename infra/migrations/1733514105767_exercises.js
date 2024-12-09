@@ -19,6 +19,10 @@ exports.up = (pgm) => {
     },
     reps: { type: "text" },
     rest_seconds: { type: "integer" },
+    is_active: {
+      type: "boolean",
+      default: true,
+    },
   });
 };
 
