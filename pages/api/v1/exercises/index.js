@@ -20,9 +20,9 @@ async function exercises(request, response) {
       case "PUT":
         await handlePut(request, response);
         break;
-      // case "DELETE":
-      //   await handleDelete(request, response);
-      //   break;
+      case "DELETE":
+        await handleDelete(request, response);
+        break;
     }
   } catch (error) {
     console.log(error);
@@ -111,6 +111,26 @@ async function handlePut(request, response) {
   }
 
   return response.status(200).json(result.rows[0]);
+}
+
+async function handleDelete(request, response) {
+  const { id } = request.query;
+  console.log(id);
+  if (!id) {
+    return response.status(400).json({ error: "ID is required" });
+  }
+
+  const result = await database.query({
+    text: `UPDATE exercises SET is_active = false WHERE id = $1 RETURNING *`,
+    values: [id],
+  });
+
+  if (result.rows.length === 0) {
+    return response.status(404).json({ error: "Exercise not found" });
+  }
+  return response
+    .status(200)
+    .json({ message: "Exercise successfully deactivated" });
 }
 
 export default exercises;
