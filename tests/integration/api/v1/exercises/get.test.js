@@ -13,6 +13,6 @@ describe("GET /api/v1/exercises", () => {
       const responseBody = await response.json();
 
       expect(Array.isArray(responseBody)).toBe(true);
-    });
+    }, 5000);
   });
 });
