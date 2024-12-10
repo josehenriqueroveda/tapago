@@ -35,6 +35,10 @@ exports.up = (pgm) => {
       notNull: true,
       default: pgm.func("current_timestamp"),
     },
+    is_active: {
+      type: "boolean",
+      default: true,
+    },
   });
 
   pgm.createTable("workouts_exercises", {
