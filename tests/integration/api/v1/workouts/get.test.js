@@ -24,8 +24,8 @@ async function dummyWorkout() {
   });
 
   const responseBodyPost = await responsePost.json();
-  workoutId = responseBodyPost.id;
-  return workoutId;
+  const dummyWorkoutId = responseBodyPost.id;
+  return dummyWorkoutId;
 }
 
 describe("GET /api/v1/workouts", () => {

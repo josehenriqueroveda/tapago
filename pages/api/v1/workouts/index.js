@@ -17,6 +17,12 @@ async function workouts(request, response) {
       case "POST":
         await handlePost(request, response);
         break;
+      case "PUT":
+        await handlePut(request, response);
+        break;
+      case "DELETE":
+        await handleDelete(request, response);
+        break;
     }
   } catch (error) {
     console.log(error);
@@ -83,6 +89,50 @@ async function handlePost(request, response) {
   }
 
   return response.status(201).json(workout.rows[0]);
+}
+
+async function handlePut(request, response) {
+  const { id } = request.query;
+  const { name, description, exercise_ids } = request.body;
+
+  if (!id) {
+    return response.status(400).json({ error: "ID is required" });
+  }
+  if (!request.body) {
+    return response.status(400).json({ error: "No fields to update" });
+  }
+  if (name) {
+    await database.query({
+      text: "UPDATE workouts SET name = $1 WHERE id = $2",
+      values: [name, id],
+    });
+  }
+
+  if (description) {
+    await database.query({
+      text: "UPDATE workouts SET description = $1 WHERE id = $2",
+      values: [description, id],
+    });
+  }
+
+  if (exercise_ids) {
+    await database.query({
+      text: "DELETE FROM workouts_exercises WHERE workout_id = $1",
+      values: [id],
+    });
+
+    for (const exerciseId of exercise_ids) {
+      await database.query({
+        text: "INSERT INTO workouts_exercises (workout_id, exercise_id) VALUES ($1, $2)",
+        values: [id, exerciseId],
+      });
+    }
+  }
+  return response.status(200).json({ message: "Workout updated successfully" });
+}
+
+async function handleDelete(request, response) {
+  return response.status(200);
 }
 
 export default workouts;

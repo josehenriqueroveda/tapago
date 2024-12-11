@@ -60,10 +60,6 @@ exports.up = (pgm) => {
       default: pgm.func("current_timestamp"),
     },
   });
-
-  pgm.addConstraint("workouts_exercises", "unique_workout_exercise", {
-    unique: ["workout_id", "exercise_id"],
-  });
 };
 
 /**

@@ -6,26 +6,26 @@ beforeAll(async () => {
   await orchestrator.waitForAllServices();
   await orchestrator.waitForTable("exercises");
   await orchestrator.waitForTable("workouts");
-  exerciseId = await dummyExercise();
+  exerciseId = await dummyExercise({
+    name: "Triceps Frances",
+    reps: "12",
+    rest_seconds: 45,
+  });
 });
 
-async function dummyExercise() {
+async function dummyExercise(exerciseObj) {
   const responsePost = await fetch("http://localhost:3000/api/v1/exercises", {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      name: "Triceps Frances",
-      reps: "12",
-      rest_seconds: 45,
-    }),
+    body: JSON.stringify(exerciseObj),
   });
 
   const responseBodyPost = await responsePost.json();
-  exerciseId = responseBodyPost.id;
-  return exerciseId;
+  const dummyExerciseId = responseBodyPost.id;
+  return dummyExerciseId;
 }
 
 describe("POST /api/v1/workouts", () => {
