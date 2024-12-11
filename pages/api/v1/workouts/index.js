@@ -132,7 +132,25 @@ async function handlePut(request, response) {
 }
 
 async function handleDelete(request, response) {
-  return response.status(200);
+  const { id } = request.query;
+
+  if (!id) {
+    return response.status(400).json({ error: "ID is required" });
+  }
+
+  await database.query({
+    text: "DELETE FROM workouts WHERE id = $1",
+    values: [id],
+  });
+
+  await database.query({
+    text: "DELETE FROM workouts_exercises WHERE workout_id = $1",
+    values: [id],
+  });
+
+  return response
+    .status(200)
+    .json({ message: "Workout successfully deactivated" });
 }
 
 export default workouts;
