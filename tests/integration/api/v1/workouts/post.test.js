@@ -5,6 +5,7 @@ let exerciseId;
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
   await orchestrator.waitForTable("exercises");
+  await orchestrator.waitForTable("workouts");
   exerciseId = await dummyExercise({
     name: "Triceps Frances",
     reps: "12",
@@ -27,30 +28,28 @@ async function dummyExercise(exerciseObj) {
   return dummyExerciseId;
 }
 
-describe("PUT /api/v1/exercises", () => {
+describe("POST /api/v1/workouts", () => {
   describe("Anonymous user", () => {
-    test("Updating an exercise", async () => {
-      const response = await fetch(
-        `http://localhost:3000/api/v1/exercises?id=${exerciseId}`,
-        {
-          method: "PUT",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            reps: "16-13-10-7",
-            rest_seconds: 90,
-          }),
+    test("Creating a workout", async () => {
+      const response = await fetch("http://localhost:3000/api/v1/workouts", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          name: "Treino de Perna",
+          description: "Foco em quadriceps",
+          exercise_ids: [exerciseId],
+        }),
+      });
 
-      expect(response.status).toBe(200);
+      expect(response.status).toBe(201);
 
       const responseBody = await response.json();
 
       expect(typeof responseBody).toBe("object");
-      expect(responseBody.message).toBe("Exercise updated successfully");
+      expect(responseBody.name).toBe("Treino de Perna");
     }, 5000);
   });
 });
