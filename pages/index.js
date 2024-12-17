@@ -2,7 +2,8 @@ import React from "react";
 import Link from "next/link";
 import useSWR from "swr";
 import { LuPlus, LuDumbbell } from "react-icons/lu";
-import "app/globals.css";
+import Loader from "app/components/loader";
+import "app/styles/globals.css";
 
 const fetcher = async (url) => {
   const response = await fetch(url);
@@ -39,7 +40,7 @@ const AvailableWorkouts = () => {
   const { data, error, isLoading } = useSWR("/api/v1/workouts", fetcher);
 
   if (isLoading) {
-    return <p className="text-gray-400">Carregando treinos...</p>;
+    return <Loader />;
   }
 
   if (error) {

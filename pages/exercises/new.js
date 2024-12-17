@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import "app/globals.css";
 import Image from "next/image";
 import Link from "next/link";
+import "app/styles/globals.css";
 
 const ExerciseForm = () => {
   const [formData, setFormData] = useState({

@@ -1,6 +1,4 @@
 import useSWR from "swr";
-import "app/globals.css";
-
 import {
   LuDatabase,
   LuGithub,
@@ -10,6 +8,7 @@ import {
 } from "react-icons/lu";
 import { LuArrowUpDown } from "react-icons/lu";
 import { LuGitBranch } from "react-icons/lu";
+import "app/styles/globals.css";
 
 async function fetchAPI(key) {
   const response = await fetch(key);
