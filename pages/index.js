@@ -1,7 +1,8 @@
 import React from "react";
-import "app/globals.css";
+import Link from "next/link";
 import useSWR from "swr";
 import { LuPlus, LuDumbbell } from "react-icons/lu";
+import "app/globals.css";
 
 const fetcher = async (url) => {
   const response = await fetch(url);
@@ -15,15 +16,21 @@ const Settings = () => (
   <section className="mb-12">
     <h2 className="text-xl md:text-2xl font-semibold mb-6">Menu</h2>
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-      <button className="bg-gray-800 p-6 rounded-lg shadow-lg hover:bg-gray-700 transition-colors flex flex-col items-center gap-3">
+      <Link
+        href="/workouts/new"
+        className="bg-gray-800 p-6 rounded-lg shadow-lg hover:bg-gray-700 transition-colors flex flex-col items-center gap-3"
+      >
         <LuPlus className="h-8 w-8 text-blue-400" />
         <span className="font-medium">Adicionar Treino</span>
-      </button>
+      </Link>
 
-      <button className="bg-gray-800 p-6 rounded-lg shadow-lg hover:bg-gray-700 transition-colors flex flex-col items-center gap-3">
+      <Link
+        href="/exercises/new"
+        className="bg-gray-800 p-6 rounded-lg shadow-lg hover:bg-gray-700 transition-colors flex flex-col items-center gap-3"
+      >
         <LuPlus className="h-8 w-8 text-green-400" />
         <span className="font-medium">Adicionar Exercício</span>
-      </button>
+      </Link>
     </div>
   </section>
 );
