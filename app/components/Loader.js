@@ -8,5 +8,10 @@ export default function Loader() {
     }
     getLoader();
   }, []);
-  return <l-dot-wave size="47" speed="1" color="#f3f4f6"></l-dot-wave>;
+  return (
+    <div className="flex items-center space-x-2">
+      <span className="text-gray-100 text-lg font-medium">Carregando </span>
+      <l-dot-wave size="32" speed="1" color="#f3f4f6"></l-dot-wave>
+    </div>
+  );
 }
