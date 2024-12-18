@@ -8,13 +8,8 @@ import {
 } from "react-icons/lu";
 import { LuArrowUpDown } from "react-icons/lu";
 import { LuGitBranch } from "react-icons/lu";
+import fetcher from "app/utils/fetcher";
 import "app/styles/globals.css";
-
-async function fetchAPI(key) {
-  const response = await fetch(key);
-  const responseBody = await response.json();
-  return responseBody;
-}
 
 export default function StatusPage() {
   return (
@@ -38,7 +33,7 @@ export default function StatusPage() {
 }
 
 function UpdatedAt() {
-  const { isLoading, data } = useSWR("/api/v1/status", fetchAPI, {
+  const { isLoading, data } = useSWR("/api/v1/status", fetcher, {
     refreshInterval: 10000,
   });
 
@@ -58,7 +53,7 @@ function UpdatedAt() {
 }
 
 function DatabaseStatus() {
-  const { isLoading, data } = useSWR("/api/v1/status", fetchAPI, {
+  const { isLoading, data } = useSWR("/api/v1/status", fetcher, {
     refreshInterval: 10000,
   });
 
@@ -110,7 +105,7 @@ function DatabaseStatus() {
 }
 
 function DatabaseVersion() {
-  const { isLoading, data } = useSWR("/api/v1/status", fetchAPI, {
+  const { isLoading, data } = useSWR("/api/v1/status", fetcher, {
     refreshInterval: 10000,
   });
 
@@ -139,7 +134,7 @@ function DatabaseVersion() {
 }
 
 function MaxConnections() {
-  const { isLoading, data } = useSWR("/api/v1/status", fetchAPI, {
+  const { isLoading, data } = useSWR("/api/v1/status", fetcher, {
     refreshInterval: 10000,
   });
 
@@ -166,7 +161,7 @@ function MaxConnections() {
 }
 
 function OpenConnections() {
-  const { isLoading, data } = useSWR("/api/v1/status", fetchAPI, {
+  const { isLoading, data } = useSWR("/api/v1/status", fetcher, {
     refreshInterval: 10000,
   });
 
@@ -199,7 +194,7 @@ function OpenConnections() {
 function VercelStatus() {
   const { isLoading, data } = useSWR(
     "https://www.vercel-status.com/api/v2/status.json",
-    fetchAPI,
+    fetcher,
     {
       refreshInterval: 60000,
     },
@@ -244,7 +239,7 @@ function VercelStatus() {
 function GitHubStatus() {
   const { isLoading, data } = useSWR(
     "https://www.githubstatus.com/api/v2/status.json",
-    fetchAPI,
+    fetcher,
     {
       refreshInterval: 60000,
     },

@@ -68,7 +68,7 @@ async function handlePost(request, response) {
 
 async function handlePut(request, response) {
   const { id } = request.query;
-  const { name, reps, rest_seconds } = request.body;
+  const { name, reps, rest_seconds, img_url } = request.body;
 
   if (!id) {
     return response.status(400).json({ error: "ID is required" });
@@ -96,6 +96,13 @@ async function handlePut(request, response) {
     await database.query({
       text: "UPDATE exercises SET rest_seconds = $1 WHERE id = $2",
       values: [rest_seconds, id],
+    });
+  }
+
+  if (img_url) {
+    await database.query({
+      text: "UPDATE exercises SET img_url = $1 WHERE id = $2",
+      values: [img_url, id],
     });
   }
 
